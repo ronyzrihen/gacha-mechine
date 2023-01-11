@@ -3,13 +3,17 @@
 #include <string>
 #include "Figure.h"
 #include "Capsule.h"
-
+using namespace std;
 
 class Toy :public Capsule,public Figure
 {
 public:
-	Toy ();
-	~Toy();
+	Toy(const Toy& source) :Figure(source), Capsule(source) {};
+	Toy (){};
+	~Toy(){};
+	
+
+
 
 private:
 

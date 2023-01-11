@@ -38,6 +38,7 @@ void Player::Play_machine(Gatcha_machine gatcha_machine) {
 			m_capsules_won = new Capsule*;
 			m_capsules_won[0] = capsule;
 			m_size++;
+			m_money -= gatcha_machine.Get_cost();
 			return;
 		}
 
@@ -46,8 +47,10 @@ void Player::Play_machine(Gatcha_machine gatcha_machine) {
 		{
 			New_capsules[i] = m_capsules_won[i];
 		}
-		New_capsules[m_size];
+		New_capsules[m_size]=capsule;
 		delete m_capsules_won;
 		m_capsules_won = New_capsules;
+		m_size++;
+		m_money -= gatcha_machine.Get_cost();
 		return;
 }
