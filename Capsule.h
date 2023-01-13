@@ -13,9 +13,9 @@ public:
 	virtual ~Capsule()=0;
 public:
 	float virtual calculate_rarity();
-	CapsuleType get_Type();
-	string Get_name();
-
+	CapsuleType get_Type() { return m_type; };
+	string Get_name() { return m_name; };
+	Rarity get_rarity() { return m_rarity; };
 private:
 	string m_name;
 	int m_worth;
