@@ -1,83 +1,128 @@
 #include "Gatcha_Machine.h"
 
-Gatcha_machine:: Gatcha_machine (Series theme, int cost) : m_theme(theme), m_capsule_cost(cost),Extra_capsules(NULL), c_size(0), ec_size(0) {
-	memset(capsules, NULL, 10 * sizeof(Capsule*));
+Gatcha_machine::Gatcha_machine(Series theme, int cost) : m_theme(theme), m_capsule_cost(cost), Extra_capsules(NULL),
+                                                         c_size(0), ec_size(0) {
+    memset(capsules, NULL, 10 * sizeof(Capsule *));
 
 }
 
 
-Capsule* Gatcha_machine::Roll_for_capsule(int num) {
+Capsule *Gatcha_machine::Roll_for_capsule(int num) {
 
-	if (!c_size)
-		return NULL;
-	
-	while (capsules[num]==NULL)
-	{
-		num = rand() % 10;
-	}
-	Capsule* random = capsules[num];
-	capsules[num] = NULL;
+    if (!c_size)
+        return NULL;
 
-	return random;
+    while (capsules[num] == NULL) {
+        num = rand() % 10;
+    }
+    Capsule *random = capsules[num];
+    capsules[num] = NULL;
+
+    return random;
 
 
 }
 
+void Gatcha_machine::insert_extra(Capsule *capsule) {
+    Candy *candy = dynamic_cast<Candy *>(capsule);
+    Toy *toy = dynamic_cast<Toy *>(capsule);
 
 
-bool Gatcha_machine::insert_capsule(Capsule* capsule) {
-	int epic = 0;
-	int legendary = 0;
-	Candy* candy=dynamic_cast<Candy*>(capsule);
-	Toy* toy = dynamic_cast<Toy*>(capsule);
+    if (!ec_size) {
+        Extra_capsules = new Capsule *;
+        if (candy)
+            *Extra_capsules = new Candy(*candy);
+        else *Extra_capsules = new Toy(*toy);
 
-	if (c_size == 10)
-	{
-		for (int i = 0; i <10; i++)
-		{
-			if (capsules[i]->get_rarity() == Legendary)
-				legendary++;
-			if (capsules[i]->get_rarity() == Epic)
-				epic++;
-		}
+        ec_size++;
+        return;
+    }
+    Capsule **newlist = new Capsule *[ec_size + 1];
+    memcpy(newlist, Extra_capsules, ec_size);
+    delete Extra_capsules;
+    Extra_capsules = newlist;
+    if (candy)
+        Extra_capsules[ec_size] = new Candy(*candy);
+    else Extra_capsules[ec_size] = new Toy(*toy);
+    ec_size++;
+    return;
+}
 
-		if (legendary == 0)
-		{
-			if (capsule->get_rarity() == Legendary) {
-				for (int i = 0; i < 10; i++)
-				{
-					if (capsules[i]->get_rarity() == Common || capsules[i]->get_rarity() == Rare) {
-						if(candy==NULL)
-							capsules[i] = new Toy(*toy);
-						else
-						{
-							capsules[i] = new Candy(*candy);
-						}
-						if (epic < 2)
-							cout << "There are less then two epic capsule in this machine \n";
-						return;
-					}
-				}
-			}
-		}
-		if (epic<2)
-		{
-			if (capsule->get_rarity() == Epic) {
-				for (int i = 0; i < 10; i++)
-				{
-					if (capsules[i]->get_rarity() == Common || capsules[i]->get_rarity() == Rare) {
-						if (candy == NULL)
-							capsules[i] = new Toy(*toy);
-						else
-						{
-							capsules[i] = new Candy(*candy);
-						}
-						if(legendary==0)
 
-						return;
-					}
-				}
-			}
-		}
-	}
+bool Gatcha_machine::insert_capsule(Capsule *capsule) {
+    int epic = 0;
+    int legendary = 0;
+    Candy *candy = dynamic_cast<Candy *>(capsule);
+    Toy *toy = dynamic_cast<Toy *>(capsule);
+
+
+    if (c_size != 10) {
+        if (candy != NULL) {
+            capsules[c_size] = new Candy(*candy);
+            c_size++;
+            return true;
+        }
+        capsules[c_size] = new Toy(*toy);
+        c_size++;
+        return true;
+    }
+
+    //In case the array is full:
+    for (int i = 0; i < 10; i++) {
+        if (capsules[i]->get_rarity() == Legendary)
+            legendary++;
+        if (capsules[i]->get_rarity() == Epic)
+            epic++;
+    }
+
+    switch (capsule->get_rarity()) {
+        case Common || Rare: {
+            insert_extra(capsule);
+            break;
+        }
+        case Legendary: {
+
+            if (legendary == 0) {
+                for (int i = 0; i < 10; i++) {
+                    if (capsules[i]->get_rarity() == Common || capsules[i]->get_rarity() == Rare) {
+                        delete capsules[i];//deleting existing capsule from arr
+                        if (candy == NULL)
+                            capsules[i] = new Toy(*toy);
+                        else {
+                            capsules[i] = new Candy(*candy);
+                        }
+                        legendary++;
+                        break;
+                    }
+                }
+            }
+            insert_extra(capsule);
+            break;
+        }
+        case Epic: {
+
+            if (epic < 2) {
+                for (int i = 0; i < 10; i++) {
+                    if (capsules[i]->get_rarity() == Common || capsules[i]->get_rarity() == Rare) {
+                        delete capsules[i];
+                        if (candy == NULL)
+                            capsules[i] = new Toy(*toy);
+                        else {
+                            capsules[i] = new Candy(*candy);
+                        }
+                        epic++;
+                        break;
+                    }
+                }
+
+            }
+            insert_extra(capsule);
+
+        }//end of Epic
+    } //End of Switch
+    if (!legendary)
+        cout << "|There are not enough legendary capsules in this machine|\n";
+    if (epic < 2)
+        cout << "|There are not enough epic capsules in this machine|\n";
+    return true;
 }

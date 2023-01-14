@@ -12,7 +12,7 @@ class Player
 {
 public:
 	Player();
-	Player(string name, int money);
+	Player(const string& name, int money);
 	~Player();
 public:
 	void Play_machine(Gatcha_machine gatcha_machine);

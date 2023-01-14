@@ -14,13 +14,13 @@ class Gatcha_machine
 {
 public:
 
-	Gatcha_machine(Series theme, int cost ):m_theme(theme), m_capsule_cost(cost);
+    Gatcha_machine (Series theme, int cost);
 	~Gatcha_machine();
 public:
 	Capsule* Roll_for_capsule(int num);//todo
 	bool insert_capsule(Capsule* capsule);
 	int Get_cost() { return m_capsule_cost; };
-
+    void insert_extra(Capsule* capsule);
 
 private:
 	Series m_theme;
