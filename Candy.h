@@ -10,8 +10,9 @@ class Candy :public Capsule, public Edible
 {
 public:
 	Candy(const Candy& source) :Capsule(source), Edible(source) {};
-	Candy();
-	~Candy();
+	Candy(){};
+	Candy(const string &name, Rarity rarity, const string& flavor, const string& color);
+	~Candy(){};
 
 private:
 

@@ -2,7 +2,7 @@
 
 
 
-Player::Player(string name, int money):
+Player::Player(const string& name, int money):
 	m_name(name),
 	m_money(money),
 	m_capsules_won(NULL),
@@ -53,4 +53,18 @@ void Player::Play_machine(Gatcha_machine gatcha_machine) {
 		m_size++;
 		m_money -= gatcha_machine.Get_cost();
 		return;
+}
+
+
+
+Player::~Player() {
+
+	if (m_size>0)
+	{
+		for (int i = 0; i < m_size; i++) {
+
+			delete m_capsules_won[i];
+		}
+		delete m_capsules_won;
+	}
 }

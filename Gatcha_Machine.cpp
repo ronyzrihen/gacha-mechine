@@ -1,7 +1,10 @@
 #include "Gatcha_Machine.h"
 
-Gatcha_machine::Gatcha_machine(Series theme, int cost) : m_theme(theme), m_capsule_cost(cost), Extra_capsules(NULL),
-                                                         c_size(0), ec_size(0) {
+
+string themes[8] = { "None", "Dragon_ball_z", "Naruto","Pokemon","Attack_on_titan","Bleach","SpyXFamily","Full_metal_alchemist" };
+
+Gatcha_machine::Gatcha_machine(Series theme, const string& color, int cost) : m_theme(theme), m_capsule_cost(cost), Extra_capsules(NULL),
+                                                         c_size(0), ec_size(0),Shell_color(color) {
     memset(capsules, NULL, 10 * sizeof(Capsule *));
 
 }
@@ -125,4 +128,36 @@ bool Gatcha_machine::insert_capsule(Capsule *capsule) {
     if (epic < 2)
         cout << "|There are not enough epic capsules in this machine|\n";
     return true;
+}
+
+
+
+
+Gatcha_machine::~Gatcha_machine() {
+
+    if (c_size>0)
+    {
+         for (int i = 0; i < c_size; i++)
+         {
+             delete capsules[i];
+         }
+         delete capsules;
+    }
+    if (ec_size>0)
+    {
+        for (int i = 0; i <ec_size; i++)
+        {
+            delete Extra_capsules[i];
+        }
+        delete Extra_capsules;
+    }
+}
+
+void Gatcha_machine::print(ostream& out) {
+    out << "Theme: " << themes[m_theme] << " Price: " << m_capsule_cost << "$";
+}
+
+ostream& operator << (ostream& out, Gatcha_machine& source) {
+    source.print(out);
+    return out;
 }
