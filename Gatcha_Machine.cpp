@@ -11,6 +11,8 @@ Gatcha_machine::Gatcha_machine(Series theme, const string& color, int cost) : m_
 
 
 Capsule *Gatcha_machine::Roll_for_capsule(int num) {
+    Capsule* P2Null = *capsules;
+    Capsule* Pswitch = P2Null;
 
     if (!c_size)
         return NULL;
@@ -21,6 +23,26 @@ Capsule *Gatcha_machine::Roll_for_capsule(int num) {
     Capsule *random = capsules[num];
     capsules[num] = NULL;
 
+    if (ec_size != 0) {
+        capsules[num] = Extra_capsules[ec_size - 1];
+        Capsule** new_extra = new Capsule * [ec_size - 1];
+        memcpy(new_extra, Extra_capsules, ec_size - 1);
+        delete[] Extra_capsules;
+        Extra_capsules = new_extra;
+        ec_size--;
+        return random;
+    }
+    
+    
+        if (capsules[num] == NULL) {
+            for (int j = num; j < c_size; j++) {
+                capsules[j] = capsules[j + 1];
+            }
+        }
+    
+    c_size--;
+    
+    
     return random;
 
 
@@ -123,10 +145,17 @@ bool Gatcha_machine::insert_capsule(Capsule *capsule) {
 
         }//end of Epic
     } //End of Switch
-    if (!legendary)
-        cout << "|There are not enough legendary capsules in this machine|\n";
+    if (legendary == 0) {
+        cout << "|There are not enough legendary capsules in the " << Get_color();
+        if (m_theme)
+            cout << themes[m_theme] ;
+        cout << " machine|\n";
+    }
     if (epic < 2)
-        cout << "|There are not enough epic capsules in this machine|\n";
+        cout << "|There are not enough epic capsules in the " << Get_color();
+    if (m_theme)
+        cout << themes[m_theme];
+    cout << " machine|\n";
     return true;
 }
 
@@ -141,7 +170,7 @@ Gatcha_machine::~Gatcha_machine() {
          {
              delete capsules[i];
          }
-         delete capsules;
+        
     }
     if (ec_size>0)
     {
@@ -149,7 +178,7 @@ Gatcha_machine::~Gatcha_machine() {
         {
             delete Extra_capsules[i];
         }
-        delete Extra_capsules;
+        delete [] Extra_capsules;
     }
 }
 

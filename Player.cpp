@@ -20,7 +20,7 @@ Player::Player():
 
 
 
-void Player::Play_machine(Gatcha_machine gatcha_machine) {
+void Player::Play_machine(Gatcha_machine& gatcha_machine) {
 	if (m_money < gatcha_machine.Get_cost()) {
 
 		cout << "You don't have enough money \n";
@@ -39,6 +39,8 @@ void Player::Play_machine(Gatcha_machine gatcha_machine) {
 			m_capsules_won[0] = capsule;
 			m_size++;
 			m_money -= gatcha_machine.Get_cost();
+			cout << "You've got " << m_capsules_won[m_size - 1]->Get_name() << "! It's worth is : " << m_capsules_won[m_size - 1]->get_worth() << "$" << endl
+				<< "Your balance is:" << m_money << "$\n";
 			return;
 		}
 
@@ -52,6 +54,8 @@ void Player::Play_machine(Gatcha_machine gatcha_machine) {
 		m_capsules_won = New_capsules;
 		m_size++;
 		m_money -= gatcha_machine.Get_cost();
+		 cout << "You've got " << m_capsules_won[m_size - 1]->Get_name() <<"! It's worth is : " << m_capsules_won[m_size-1]->get_worth() << "$" << endl
+			 <<"Your balance:" << m_money << "$\n";
 		return;
 }
 
@@ -65,6 +69,6 @@ Player::~Player() {
 
 			delete m_capsules_won[i];
 		}
-		delete m_capsules_won;
+		delete[] m_capsules_won;
 	}
 }

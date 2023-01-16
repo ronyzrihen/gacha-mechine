@@ -14,10 +14,11 @@ public:
 	Capsule(string name, Rarity rarity, CapsuleType type, string color);
 	virtual ~Capsule()=0{};
 public:
-	//float virtual calculate_rarity();
+	void virtual calculate_rarity(float machine_cost);
 	CapsuleType get_Type() { return m_type; };
 	string Get_name() { return m_name; };
 	Rarity get_rarity() { return m_rarity; };
+	float get_worth() { return m_worth; };
 private:
 	string m_name;
 	float m_worth;

@@ -15,7 +15,7 @@ public:
 	Player(const string& name, int money);
 	~Player();
 public:
-	void Play_machine(Gatcha_machine gatcha_machine);
+	void Play_machine(Gatcha_machine& gatcha_machine);
 private:
 	string m_name;
 	int m_money;
