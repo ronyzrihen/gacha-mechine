@@ -1,3 +1,6 @@
+//
+// Created by Ofek Eliyahu - 207753120 and Rony Zrihen - 318917549 .
+//
 #pragma once
 #include <string>
 #include <iostream>
@@ -9,8 +12,8 @@ using namespace std;
 class Candy :public Capsule, public Edible
 {
 public:
-	Candy(const Candy& source) :Capsule(source), Edible(source) {};
 	Candy(){};
+	Candy(const Candy& source) :Capsule(source), Edible(source) {};
 	Candy(const string &name, Rarity rarity, const string& flavor, const string& color);
 	~Candy(){};
 

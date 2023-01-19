@@ -1,3 +1,6 @@
+//
+// Created by Ofek Eliyahu - 207753120 and Rony Zrihen - 318917549 .
+//
 #pragma once
 #include <string>
 #include<iostream>
@@ -20,10 +23,12 @@ public:
 public:
 	Capsule* Roll_for_capsule(int num);//todo
 	bool insert_capsule(Capsule* capsule);
-	int Get_cost() { return m_capsule_cost; };
     void insert_extra(Capsule* capsule);
+
+	int Get_cost() { return m_capsule_cost; };
 	int get_c_size() { return c_size; };
 	Series get_theme() { return m_theme; };
+
 	void print(ostream& out);
 
 private:

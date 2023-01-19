@@ -1,3 +1,6 @@
+//
+// Created by Ofek Eliyahu - 207753120 and Rony Zrihen - 318917549 .
+//
 #include "Gatcha_Machine.h"
 
 
@@ -11,13 +14,11 @@ Gatcha_machine::Gatcha_machine(Series theme, const string& color, int cost) : m_
 
 
 Capsule *Gatcha_machine::Roll_for_capsule(int num) {
-    Capsule* P2Null = *capsules;
-    Capsule* Pswitch = P2Null;
 
     if (!c_size)
         return NULL;
 
-    while (capsules[num] == NULL) {
+    while (capsules[num] == NULL || num >= c_size) {
         num = rand() % 10;
     }
     Capsule *random = capsules[num];
@@ -34,13 +35,14 @@ Capsule *Gatcha_machine::Roll_for_capsule(int num) {
     }
     
     
-        if (capsules[num] == NULL) {
+        if (capsules[num] == NULL ) {
             for (int j = num; j < c_size; j++) {
                 capsules[j] = capsules[j + 1];
             }
         }
     
     c_size--;
+
     
     
     return random;
@@ -160,6 +162,14 @@ bool Gatcha_machine::insert_capsule(Capsule *capsule) {
 }
 
 
+void Gatcha_machine::print(ostream& out) {
+    out << "Theme: " << themes[m_theme] << " Price: " << m_capsule_cost << "$";
+}
+
+ostream& operator << (ostream& out, Gatcha_machine& source) {
+    source.print(out);
+    return out;
+}
 
 
 Gatcha_machine::~Gatcha_machine() {
@@ -180,13 +190,4 @@ Gatcha_machine::~Gatcha_machine() {
         }
         delete [] Extra_capsules;
     }
-}
-
-void Gatcha_machine::print(ostream& out) {
-    out << "Theme: " << themes[m_theme] << " Price: " << m_capsule_cost << "$";
-}
-
-ostream& operator << (ostream& out, Gatcha_machine& source) {
-    source.print(out);
-    return out;
 }

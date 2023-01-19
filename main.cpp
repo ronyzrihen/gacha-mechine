@@ -1,5 +1,5 @@
 //
-// Created by Ofek Eliyahu and Rony Zrihen .
+// Created by Ofek Eliyahu - 207753120 and Rony Zrihen - 318917549 .
 //
 #include "Player.h"
 

@@ -1,3 +1,6 @@
+//
+// Created by Ofek Eliyahu - 207753120 and Rony Zrihen - 318917549 .
+//
 #pragma once
 #include <iostream>
 #include<string>
@@ -17,10 +20,11 @@ public:
 public:
 	void Play_machine(Gatcha_machine& gatcha_machine);
 private:
-	string m_name;
-	int m_money;
-	Capsule** m_capsules_won;
+
 	int m_size;
+	int m_money;
+	string m_name;
+	Capsule** m_capsules_won;
 };
 
 
